@@ -1,17 +1,10 @@
-## Learn More
-Fluke Example React Context State Provider 
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Fluke Example React Context State Provider 
  
+- Step :
+  - create State Provider in state.js
+  - use StateProvider in _app.tsx for another children can access state from any where
+  - ProfileBox.js to show a state data
+  - Counter.js to change a value in the state
+  
+
  
