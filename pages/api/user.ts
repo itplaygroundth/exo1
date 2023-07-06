@@ -6,6 +6,8 @@ export type User = {
   isLoggedIn: boolean;
   login: string;
   avatarUrl: string;
+  token: string;
+  status: boolean;
 };
 
 export default withIronSessionApiRoute(userRoute, sessionOptions);
@@ -23,6 +25,8 @@ async function userRoute(req: NextApiRequest, res: NextApiResponse<User>) {
       isLoggedIn: false,
       login: "",
       avatarUrl: "",
+      status:false,
+      token:""
     });
   }
 }

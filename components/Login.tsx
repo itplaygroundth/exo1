@@ -1,38 +1,50 @@
 import { useUserState } from "@/context/state"
 import style from './Profile.module.css';
 import axios from "axios";
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image'
-
+import Router from 'next/router'
 import { withIronSessionApiRoute } from "iron-session/next";
 
-export default function SigninBox(props: { csrfToken: string }) {
+export default function LoginBox(props: { csrfToken: string }) {
 
     const { user, setUser } = useUserState();
+    const [ alert, setAlert] = useState("hidden");
+    const [msg,setMsg]= useState("");
     const {csrfToken} = props;
+
     const signin = async (event:any) =>{
-        
-          
-           //const csrf = await  axios.get("/api/csrf") 
-            
-            await axios.post("/api/signin", 
-                    {"user": event.target.username.value,"pass": event.target.password.value},
-                {
-                    
-                headers: {
-                "content-type": "application/json",
-                "samesite":"Strict",
-                "httponly": true,
-                'CSRF-Token': csrfToken
-                },
-            })
-            .then((response)=>{
+        await axios.post("/api/login", 
+        {"user": event.target.username.value,"pass": event.target.password.value},
+            {
                 
-                setUser({...user,name:event.target.username.value})
-                 
-            })
-            .catch((e) => console.log(e));
-        
+            headers: {
+            "content-type": "application/json",
+            "samesite":"Strict",
+            "httponly": true,
+            'CSRF-Token': csrfToken
+            },
+        })
+        .then(async (response)=>{
+           const {status,message} = await response.data;
+           if(status)
+           Router.push("/dashboard")
+            //setUser({...user,name:event.target.username.value})
+            else {
+                setAlert("");
+                setMsg(message);
+            }
+        })
+        .catch((e) => console.log(e));
+    };
+    const showToast = (message:string) => {
+        // Show the toast
+        // document.getElementById("myToast").classList.remove("hidden");
+        // // Hide the toast after 5 seconds (5000ms)
+        // // you can set a shorter/longer time by replacing "5000" with another number
+        // setTimeout(function () {
+        //     document.getElementById("myToast").classList.add("hidden");
+        // }, 5000);
     }
     return (
          
@@ -71,7 +83,15 @@ export default function SigninBox(props: { csrfToken: string }) {
             </div>
             <input type="hidden" name="csrf_token" value={csrfToken} />
             </form>
+            <div id="myToast" className={`${alert} fixed right-10 bottom-10 px-5 py-4 border-r-8 border-blue-500 bg-white drop-shadow-lg`}>
+            <p className="text-sm">
+            
+            <span className="mr-2 inline-block px-3 py-1 rounded-full bg-blue-500 text-white font-extrabold">i</span>
+            {msg}
+        </p>
+    </div>
             </div>
+            
        
     );
         

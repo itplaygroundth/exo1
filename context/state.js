@@ -4,11 +4,7 @@ const StateContext = createContext();
 export function StateProvider({children}){
    
     const [status, setStatus] = React.useState('loaded');
-    const [user,setUser] = React.useState({
-        name: "Mobilius",
-        isLogged: false,
-        balance: 2000
-      })
+    const [user,setUser] = React.useState( )
 
  
 

@@ -10,6 +10,8 @@ export const sessionOptions: IronSessionOptions = {
   },
 };
 
+
+
 // This is where we specify the typings of req.session.*
 declare module "iron-session" {
   interface IronSessionData {
