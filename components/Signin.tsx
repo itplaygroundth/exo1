@@ -8,7 +8,7 @@ import { withIronSessionApiRoute } from "iron-session/next";
 
 export default function SigninBox(props: { csrfToken: string }) {
 
-    const { user, setUser } = useUserState();
+    const[ user, setUser ] = useUserState();
     const {csrfToken} = props;
     const signin = async (event:any) =>{
         
@@ -26,9 +26,10 @@ export default function SigninBox(props: { csrfToken: string }) {
                 'CSRF-Token': csrfToken
                 },
             })
-            .then((response)=>{
-                
-                setUser({...user,name:event.target.username.value})
+            .then(async (response)=>{
+                //console.log(user);
+                await setUser(user)
+                //setUser({...user,name:event.target.username.value})
                  
             })
             .catch((e) => console.log(e));

@@ -13,7 +13,7 @@ async function loginRoute(req:any, res:NextApiResponse) {
   
  
 
-  await axios.post("http://141.98.19.26:5000/api/signin", 
+  await axios.post("http://141.98.19.26:5000/api/login", 
     {"user": user,"pass": pass},
     {
         headers: {
@@ -25,12 +25,15 @@ async function loginRoute(req:any, res:NextApiResponse) {
     }).then(async(response) =>{
  
         if(response.data.status){
-        req.session.user = response.data;
         
+        req.session.user = response.data;
+        req.session.user.isLoggedIn = true;
+        req.session.user.username = user
         await req.session.save();
         
- 
+            
         }
+        //console.log(req.session.user)
         res.json(response.data);
  
     })

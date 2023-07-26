@@ -6,7 +6,7 @@ const nextConfig = {
     return [
       {
         source: "/api/signin",
-        destination: "http://141.98.19.26:5000/api/signin",
+        destination: "http://141.98.19.26:6020/auth/login",
       },
       {
         source: "/api/csrf",

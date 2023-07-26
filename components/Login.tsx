@@ -26,11 +26,14 @@ export default function LoginBox(props: { csrfToken: string }) {
             },
         })
         .then(async (response)=>{
-           const {status,message} = await response.data;
-           if(status)
-           Router.push("/dashboard")
+            
+           const {status,message,auth,isLoggedIn} = await response.data;
+           if(status || auth || isLoggedIn)
+           {
             //setUser({...user,name:event.target.username.value})
-            else {
+            Router.push("/dashboard")
+            
+            }else {
                 setAlert("");
                 setMsg(message);
             }
@@ -84,12 +87,12 @@ export default function LoginBox(props: { csrfToken: string }) {
             <input type="hidden" name="csrf_token" value={csrfToken} />
             </form>
             <div id="myToast" className={`${alert} fixed right-10 bottom-10 px-5 py-4 border-r-8 border-blue-500 bg-white drop-shadow-lg`}>
-            <p className="text-sm">
+                <p className="text-sm">
             
-            <span className="mr-2 inline-block px-3 py-1 rounded-full bg-blue-500 text-white font-extrabold">i</span>
-            {msg}
-        </p>
-    </div>
+                <span className="mr-2 inline-block px-3 py-1 rounded-full bg-blue-500 text-white font-extrabold">i</span>
+                {msg}
+                </p>
+            </div>
             </div>
             
        

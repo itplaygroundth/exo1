@@ -8,7 +8,7 @@ export default function useUser({
   redirectIfFound = false,
 } = {}) {
   const { data: user, mutate: mutateUser } = useSWR<User>('/api/user')
-
+  
   useEffect(() => {
     // if no redirect needed, just return (example: already on /dashboard)
     // if user data not yet there (fetch in progress, logged in or not) then don't do anything yet
@@ -23,6 +23,6 @@ export default function useUser({
       Router.push(redirectTo)
     }
   }, [user, redirectIfFound, redirectTo])
-
+ 
   return { user, mutateUser }
 }

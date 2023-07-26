@@ -6,9 +6,19 @@ export type User = {
   isLoggedIn: boolean;
   login: string;
   avatarUrl: string;
-  token: string;
+  access_token: string;
+refresh_token: string;
+notify_token:string;
+auth:boolean;
   status: boolean;
 };
+
+export type Message = {
+  token:String;
+  username:String;
+  userid: Number;
+  message:String
+}
 
 export default withIronSessionApiRoute(userRoute, sessionOptions);
 
@@ -23,10 +33,13 @@ async function userRoute(req: NextApiRequest, res: NextApiResponse<User>) {
   } else {
     res.json({
       isLoggedIn: false,
+      auth:false,
+      notify_token:"",
       login: "",
       avatarUrl: "",
       status:false,
-      token:""
+      access_token:"",
+      refresh_token:"",
     });
   }
 }

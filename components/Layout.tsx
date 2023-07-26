@@ -1,7 +1,34 @@
 import Head from 'next/head'
 import Header from './Header'
+import { useContext, useEffect,useState } from 'react';
+import  { SocketContext } from '@/context/socket';
+import {useUserState} from '@/context/state'
+import useUser from '@/lib/useUser';
+import { IMsg } from '@/lib/socket';
+import { useToast } from "@/hooks/useToast";
+
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const {user,mutateUser} = useUser()
+  //const [users,setUsers] = useState(user)
+  const [message,setMessage] = useUserState()
+  const [status,setStatus] =useUserState()
+  const {socket} = useContext(SocketContext)
+  const toast = useToast();
+
+  useEffect(()=>{
+    setStatus(true)
+    socket.on("connect_error", () => {
+      // revert to classic upgrade
+      socket.io.opts.transports = ["polling", "websocket"];
+    });
+    socket.emit('online',user?.access_token)
+    socket.on('notification',async (msg:IMsg)=>{
+    await toast.success(msg.content)
+     // await setStatus(true)
+     // await setMessage(msg.content)
+    })
+  },[socket])
   return (
     <>
       <Head>
@@ -30,7 +57,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         }
       `}</style>
       <Header />
-
+ 
       <main>
         <div className="container">{children}</div>
       </main>
